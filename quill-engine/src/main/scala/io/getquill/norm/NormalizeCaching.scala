@@ -1,22 +1,20 @@
 package io.getquill.norm
 
+import com.github.benmanes.caffeine.cache.{ Cache, Caffeine }
 import io.getquill.ast.Ast
-import java.util.concurrent.ConcurrentHashMap
+import io.getquill.util.Messages
 
 object NormalizeCaching {
-  private val cache = new ConcurrentHashMap[Ast, Ast]
+
+  private val cache: Cache[Ast, Ast] = Caffeine
+    .newBuilder()
+    .maximumSize(Messages.cacheDynamicMaxSize)
+    .recordStats()
+    .build()
 
   def apply(f: Ast => Ast): Ast => Ast = { ori =>
-    val (stablized, state) = StablizeLifts.stablize(ori)
-    val cachedR = cache.get(stablized)
-    val normalized = if (cachedR != null) {
-      cachedR
-    } else {
-      val r = f(stablized)
-      cache.put(stablized, r)
-      r
-    }
+    val (stabilized, state) = StablizeLifts.stablize(ori)
+    val normalized = cache.get(stabilized, ast => f(ast))
     StablizeLifts.revert(normalized, state)
   }
-
 }

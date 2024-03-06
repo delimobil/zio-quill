@@ -34,6 +34,7 @@ object Messages {
   def disableReturning = cache("quill.query.disableReturning", variable("quill.query.disableReturning", "quill_query_disableReturning", "false").toBoolean)
   def logBinds = cache("quill.binds.log", variable("quill.binds.log", "quill_binds_log", "false").toBoolean)
   def queryTooLongForLogs = cache("quill.query.tooLong", variable("quill.query.tooLong", "quill_query_tooLong", "200").toInt)
+  def cacheDynamicMaxSize = cache("quill.query.cacheDynamicMaxSize", variable("quill.query.cacheDynamicMaxSize", "query_query_cacheDynamicMaxSize", "1024").toLong)
 
   sealed trait LogToFile
   object LogToFile {

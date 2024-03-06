@@ -34,54 +34,54 @@ val CodegenTag = Tags.Tag("CodegenTag")
 (Global / concurrentRestrictions) += Tags.limit(ScalaJSTags.Link, 1)
 
 lazy val jsModules = Seq[sbt.ClasspathDep[sbt.ProjectReference]](
-  `quill-engine-js`, `quill-core-js`, `quill-sql-js`
+//  `quill-engine-js`, `quill-core-js`, `quill-sql-js`
 )
 
 lazy val baseModules = Seq[sbt.ClasspathDep[sbt.ProjectReference]](
   `quill-engine-jvm`,
   `quill-core-jvm`,
-  `quill-sql-jvm`, `quill-monix`, `quill-zio`,
+  `quill-sql-jvm`, // `quill-monix`, `quill-zio`,
   `quill-util`
 )
 
 lazy val dbModules = Seq[sbt.ClasspathDep[sbt.ProjectReference]](
-  `quill-jdbc`, `quill-doobie`, `quill-jdbc-monix`, `quill-jdbc-zio`
+  `quill-jdbc`, `quill-doobie` // , `quill-jdbc-monix`, `quill-jdbc-zio`
 )
 
 lazy val jasyncModules = Seq[sbt.ClasspathDep[sbt.ProjectReference]](
-  `quill-jasync`, `quill-jasync-postgres`, `quill-jasync-mysql`, `quill-jasync-zio`, `quill-jasync-zio-postgres`
+//  `quill-jasync`, `quill-jasync-postgres`, `quill-jasync-mysql`, `quill-jasync-zio`, `quill-jasync-zio-postgres`
 )
 
 lazy val asyncModules = Seq[sbt.ClasspathDep[sbt.ProjectReference]](
-  `quill-finagle-mysql`, `quill-finagle-postgres`,
-  `quill-ndbc`, `quill-ndbc-postgres`, `quill-ndbc-monix`
+//  `quill-finagle-mysql`, `quill-finagle-postgres`,
+//  `quill-ndbc`, `quill-ndbc-postgres`, `quill-ndbc-monix`
 ) ++ jasyncModules
 
 lazy val codegenModules = Seq[sbt.ClasspathDep[sbt.ProjectReference]](
-  `quill-codegen`, `quill-codegen-jdbc`, `quill-codegen-tests`
+  `quill-codegen`, `quill-codegen-jdbc` // , `quill-codegen-tests`
 )
 
 lazy val bigdataModules = Seq[sbt.ClasspathDep[sbt.ProjectReference]](
-  `quill-cassandra`, `quill-cassandra-monix`, `quill-cassandra-zio`, `quill-cassandra-alpakka`,
-  `quill-orientdb`, `quill-spark`
+//  `quill-cassandra`, `quill-cassandra-monix`, `quill-cassandra-zio`, `quill-cassandra-alpakka`,
+//  `quill-orientdb`, `quill-spark`
 )
 
 lazy val allModules =
   baseModules ++ jsModules ++ dbModules ++ asyncModules ++ codegenModules ++ bigdataModules
 
 lazy val scala213Modules = baseModules ++ jsModules ++ dbModules ++ codegenModules ++ Seq[sbt.ClasspathDep[sbt.ProjectReference]](
-  `quill-finagle-mysql`,
-  `quill-cassandra`,
-  `quill-cassandra-alpakka`,
-  `quill-cassandra-monix`,
-  `quill-cassandra-zio`,
-  `quill-orientdb`,
-  `quill-jasync`,
-  `quill-jasync-postgres`,
-  `quill-jasync-mysql`,
-  `quill-jasync-zio`,
-  `quill-jasync-zio-postgres`,
-  `quill-spark`
+//  `quill-finagle-mysql`,
+//  `quill-cassandra`,
+//  `quill-cassandra-alpakka`,
+//  `quill-cassandra-monix`,
+//  `quill-cassandra-zio`,
+//  `quill-orientdb`,
+//  `quill-jasync`,
+//  `quill-jasync-postgres`,
+//  `quill-jasync-mysql`,
+//  `quill-jasync-zio`,
+//  `quill-jasync-zio-postgres`,
+//  `quill-spark`
 )
 
 lazy val notScala211Modules = Seq[sbt.ClasspathDep[sbt.ProjectReference]](
@@ -267,6 +267,7 @@ lazy val `quill-engine` =
       libraryDependencies ++= Seq(
         "com.typesafe"               %  "config"        % "1.4.2",
         "com.typesafe.scala-logging" %% "scala-logging" % "3.9.4",
+        "com.github.ben-manes.caffeine" % "caffeine"    % "3.1.8",
         ("com.github.takayahilton"   %%% "sql-formatter" % "1.2.1").cross(CrossVersion.for3Use2_13)
       ) ++ {
         if (isScala211)
